@@ -5,8 +5,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 
 import ch.hftm.blog.entities.Entry;
 import ch.hftm.blog.services.EntryService;
@@ -14,22 +17,26 @@ import ch.hftm.blog.services.EntryService;
 @Path("/entries")
 public class EntryResource {
 
-    /**
-     * @return 
-     */
-    @GET
     @Inject
-    public List<Entry> getEntries(EntryService entryService) { 
-        entryService.addDummyEntries();
+    EntryService entryService;
+
+    @GET
+    public List<Entry> getEntries() { 
         return entryService.getEntries();
     }
 
-    @GET
-    @Path("/add")
+    @POST
+    @Path("addEntry")
     @Transactional
-    public void addEntry(){
-        var entry = new Entry("Title 2","content2");
-        entry.persist();
+    @Consumes(MediaType.APPLICATION_JSON) //not neccessary, bc its default
+    public void addEntry(Entry entry){
+        this.entryService.persistEntry(entry);
+    }
+
+    @GET
+    @Path("{id}")
+    public Entry getEntryById(long id){
+        return this.entryService.getEntryById(id);
     }
     
 }

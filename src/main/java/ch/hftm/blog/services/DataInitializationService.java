@@ -1,7 +1,10 @@
 package ch.hftm.blog.services;
 
+import java.util.List;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import ch.hftm.blog.entities.Entry;
@@ -10,15 +13,16 @@ import io.quarkus.runtime.StartupEvent;
 @ApplicationScoped
 public class DataInitializationService {
     
+    @Inject
+    EntryService entryService;
+
     @Transactional
     void init(@Observes StartupEvent event){
-        // if(Entry.count() < 1){
-            //for(int i = 0; i <= 10; i++){
-                // var entry = new Entry("Title " + i,"Content " + i);
-                var entry = new Entry("Title Init Test","Content ");
-                entry.persist();
-            //}
-            
-        // }
+        List<Entry> entries = entryService.getEntries();
+        if(entries.isEmpty()){
+                for(int i = 0; i <= 10; i++){
+                    entryService.persistEntry(new Entry("Title " + i,"Content " + i));
+                }
+        }           
     }
 }
