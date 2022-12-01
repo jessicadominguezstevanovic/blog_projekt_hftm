@@ -16,16 +16,19 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Response.Status;
 
 import ch.hftm.blog.entities.Entry;
 import ch.hftm.blog.services.EntryService;
+import ch.hftm.blog.services.ExceptionService;
 
 @Path("/entries")
 public class EntryResource {
 
     @Inject
     EntryService entryService;
+
+    @Inject 
+    ExceptionService exceptionService;
 
     @GET
     public List<Entry> getEntriesWithPaging(@QueryParam("pageSize") int pageSize, @QueryParam("page") int page) { 
@@ -77,19 +80,21 @@ public class EntryResource {
     @Consumes(MediaType.APPLICATION_JSON) //not neccessary, bc its default
     public Response addEntry(Entry entry, @Context UriInfo uriInfo){
         var villain = this.entryService.persistEntry(entry);
-        UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(villain.id));
-        
+        // Ich bekomme hier den falschen Pfad mit absolute..
+        UriBuilder builder = uriInfo.getBaseUriBuilder().path("entries/" + Long.toString(villain.id));
         return Response.created(builder.build()).build();
     }
 
     @GET
     @Path("{id}")
-    public Response getEntryById(long id){
+    public Entry getEntryById(long id){
         Entry entry = this.entryService.getEntryById(id);
         if(entry == null){
-            return Response.status(Status.NOT_FOUND).header("Info", "Whoops! Not Found").entity("No entry with this ID found").build();
+            exceptionService.notFoundException("Info", "Whoops!", "We couldnt find an Entry with such ID");
+            return new Entry();
         } else{
-            return Response.status(Status.OK).entity(entry).build();
+            exceptionService.entityFoundOk(entry);
+            return entry;
         }
     }
     
