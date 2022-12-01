@@ -4,14 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.QueryParam;
 
 import ch.hftm.blog.entities.Entry;
 
 @ApplicationScoped
 public class EntryService {
+
+
  
     public List<Entry> getEntries(){
         return Entry.listAll();
+    }
+    public List<Entry> getEntriesWithPaging(int pageSize, int page){
+        int defaultPage = 0;
+        int defaultPageSize = 10;
+
+        if(page != defaultPage || (pageSize != defaultPageSize && pageSize > 0)){
+            return Entry.findAll().page(page, pageSize).list();
+        } else{
+            return Entry.findAll().page(defaultPage, defaultPageSize).list();
+        }
     }
 
     public void persistEntry(Entry entry){

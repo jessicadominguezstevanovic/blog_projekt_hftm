@@ -23,13 +23,19 @@ public class EntryResource {
     EntryService entryService;
 
     @GET
-    public List<Entry> getAllEntries() { 
-        return entryService.getEntries();
+    public List<Entry> getEntriesWithPaging(@QueryParam("pageSize") int pageSize, @QueryParam("page") int page) { 
+        return entryService.getEntriesWithPaging(pageSize, page);
     }
+
+    // @GET
+    // @Path("/all")
+    // public List<Entry> getAllEntries() { 
+    //     return entryService.getEntries();
+    // }
 
     @GET
     @Path("/searchByTitle")
-    public List<Entry> getEntriesWithTitleLike(@QueryParam("search") String searchString) { 
+    public List<Entry> getEntriesWithTitleLike(String searchString) { 
         if(searchString != null && !searchString.isEmpty()){
             return entryService.searchEntriesByTitle(searchString);
         } else{

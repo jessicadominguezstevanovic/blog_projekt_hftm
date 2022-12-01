@@ -20,7 +20,7 @@ public class DataInitializationService {
     void init(@Observes StartupEvent event){
         List<Entry> entries = entryService.getEntries();
         if(entries.isEmpty()){
-                for(int i = 0; i <= 10; i++){
+                for(int i = 0; i <= 40; i++){
                     entryService.persistEntry(new Entry("Title " + i,"Content " + i));
                 }
         }           
