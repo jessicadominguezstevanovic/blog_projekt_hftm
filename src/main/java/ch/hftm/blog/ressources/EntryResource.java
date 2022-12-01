@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import ch.hftm.blog.dto.NewEntryDto;
 import ch.hftm.blog.entities.Entry;
 import ch.hftm.blog.services.EntryService;
 import ch.hftm.blog.services.ExceptionService;
@@ -79,7 +80,9 @@ public class EntryResource {
     @Path("addEntry")
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON) //not neccessary, bc its default
-    public Response addEntry(@Valid Entry entry, @Context UriInfo uriInfo){
+    public Response addEntry(@Valid NewEntryDto entryDto, @Context UriInfo uriInfo){
+        Entry entry = new Entry(entryDto);
+
         var villain = this.entryService.persistEntry(entry);
         // Ich bekomme hier den falschen Pfad mit absolute..
         UriBuilder builder = uriInfo.getBaseUriBuilder().path("entries/" + Long.toString(villain.id));

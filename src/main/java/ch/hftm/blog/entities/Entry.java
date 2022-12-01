@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
+import ch.hftm.blog.dto.NewEntryDto;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 
@@ -21,6 +22,11 @@ public class Entry extends PanacheEntityBase{
     public String title;
     @NotBlank
     public String content;
+
+
+    public Entry(NewEntryDto entryDto){
+        this(entryDto.getTitle(), entryDto.getContent());
+    }
 
     public Entry(){}
 
