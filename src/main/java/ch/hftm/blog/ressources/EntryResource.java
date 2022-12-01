@@ -11,7 +11,12 @@ import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
 import ch.hftm.blog.entities.Entry;
 import ch.hftm.blog.services.EntryService;
@@ -26,12 +31,6 @@ public class EntryResource {
     public List<Entry> getEntriesWithPaging(@QueryParam("pageSize") int pageSize, @QueryParam("page") int page) { 
         return entryService.getEntriesWithPaging(pageSize, page);
     }
-
-    // @GET
-    // @Path("/all")
-    // public List<Entry> getAllEntries() { 
-    //     return entryService.getEntries();
-    // }
 
     @GET
     @Path("/searchByTitle")
@@ -76,14 +75,22 @@ public class EntryResource {
     @Path("addEntry")
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON) //not neccessary, bc its default
-    public void addEntry(Entry entry){
-        this.entryService.persistEntry(entry);
+    public Response addEntry(Entry entry, @Context UriInfo uriInfo){
+        var villain = this.entryService.persistEntry(entry);
+        UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(villain.id));
+        
+        return Response.created(builder.build()).build();
     }
 
     @GET
     @Path("{id}")
-    public Entry getEntryById(long id){
-        return this.entryService.getEntryById(id);
+    public Response getEntryById(long id){
+        Entry entry = this.entryService.getEntryById(id);
+        if(entry == null){
+            return Response.status(Status.NOT_FOUND).header("Info", "Whoops! Not Found").entity("No entry with this ID found").build();
+        } else{
+            return Response.status(Status.OK).entity(entry).build();
+        }
     }
     
 }

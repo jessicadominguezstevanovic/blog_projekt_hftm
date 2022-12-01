@@ -9,11 +9,10 @@ import ch.hftm.blog.entities.Entry;
 @ApplicationScoped
 public class EntryService {
 
-
- 
     public List<Entry> getEntries(){
         return Entry.listAll();
     }
+
     public List<Entry> getEntriesWithPaging(int pageSize, int page){
         int defaultPage = 0;
         int defaultPageSize = 10;
@@ -25,8 +24,9 @@ public class EntryService {
         }
     }
 
-    public void persistEntry(Entry entry){
+    public Entry persistEntry(Entry entry){
         entry.persist();
+        return entry;
     }
 
     public Entry getEntryById(long id){
