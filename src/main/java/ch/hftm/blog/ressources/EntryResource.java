@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
@@ -78,7 +79,7 @@ public class EntryResource {
     @Path("addEntry")
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON) //not neccessary, bc its default
-    public Response addEntry(Entry entry, @Context UriInfo uriInfo){
+    public Response addEntry(@Valid Entry entry, @Context UriInfo uriInfo){
         var villain = this.entryService.persistEntry(entry);
         // Ich bekomme hier den falschen Pfad mit absolute..
         UriBuilder builder = uriInfo.getBaseUriBuilder().path("entries/" + Long.toString(villain.id));

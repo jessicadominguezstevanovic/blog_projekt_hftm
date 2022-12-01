@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
 
 @Entity
 public class Entry extends PanacheEntityBase{
@@ -17,6 +19,7 @@ public class Entry extends PanacheEntityBase{
     public Long id;
     
     public String title;
+    @NotBlank
     public String content;
 
     public Entry(){}
