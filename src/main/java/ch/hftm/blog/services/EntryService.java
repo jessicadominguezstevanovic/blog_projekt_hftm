@@ -1,5 +1,6 @@
 package ch.hftm.blog.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -19,5 +20,13 @@ public class EntryService {
 
     public Entry getEntryById(long id){
         return Entry.findById(id);
+    }
+
+    public List<Entry> searchEntriesByTitle(String searchString){
+        return Entry.list("title LIKE ?1",  "%" + searchString + "%");
+    }
+
+    public List<Entry> searchEntriesByContent(String searchString){
+        return Entry.list("content LIKE ?1",  "%" + searchString + "%");
     }
 }

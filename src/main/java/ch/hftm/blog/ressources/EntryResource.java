@@ -7,8 +7,10 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import ch.hftm.blog.entities.Entry;
@@ -21,8 +23,47 @@ public class EntryResource {
     EntryService entryService;
 
     @GET
-    public List<Entry> getEntries() { 
+    public List<Entry> getAllEntries() { 
         return entryService.getEntries();
+    }
+
+    @GET
+    @Path("/searchByTitle")
+    public List<Entry> getEntriesWithTitleLike(@QueryParam("search") String searchString) { 
+        if(searchString != null && !searchString.isEmpty()){
+            return entryService.searchEntriesByTitle(searchString);
+        } else{
+            return entryService.getEntries();
+        }
+    }
+
+    @GET
+    @Path("/searchByContent")
+    public List<Entry> getEntriesWithContentLike(@QueryParam("search") String searchString) { 
+        if(searchString != null && !searchString.isEmpty()){
+            return entryService.searchEntriesByContent(searchString);
+        } else{
+            return entryService.getEntries();
+        }
+    }
+
+    @PATCH
+    @Path("{id}")
+    @Transactional
+    public void patchEntry(Entry entry, long id){
+        var reqEntry = entryService.getEntryById(id);
+
+        if(entry.title != null && !"".equals(entry.title)){
+            reqEntry.title = entry.title;
+        }
+        if(entry.content != null && !"".equals(entry.content)){
+            reqEntry.content = entry.content;
+        }
+        if(entry != reqEntry){
+            entryService.persistEntry(reqEntry);
+        } else{
+            //return msg to user and do nothing
+        }
     }
 
     @POST
