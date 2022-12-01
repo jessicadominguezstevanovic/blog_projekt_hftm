@@ -1,10 +1,8 @@
 package ch.hftm.blog.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.QueryParam;
 
 import ch.hftm.blog.entities.Entry;
 
