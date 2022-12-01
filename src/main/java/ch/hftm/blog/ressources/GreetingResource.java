@@ -1,17 +1,17 @@
-package org.acme;
+package ch.hftm.blog.ressources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/blog")
-public class BlogResource {
+@Path("/hello")
+public class GreetingResource {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
-        return "Willkommen im Blog!";
+        return "Hello from RESTEasy Reactive";
     }
-    
+
 }

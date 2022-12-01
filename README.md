@@ -4,6 +4,13 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
+Zum starten: Projekt mit ./mvnw quarkus:dev einmal starten
+Zugriffe testen:
+- http://localhost:8080/hello
+- http://localhost:8080/q/dev/
+- http://localhost:8080/q/blog/
+
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
