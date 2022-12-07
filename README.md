@@ -20,6 +20,7 @@ Ich habe noch nicht verstanden wieso er da etwas eigenes mit eigenem Realm aufba
 
 Bevor ich in die Klapse komme, weil mein Keycloak Container läuft, aber mein Quarkus container nicht laufen will mache ich hier einen Schnitt.
 Fehlermeldung in Terminal
+    Der Path für Keycloak findet er nicht... Wahrscheinlich weil beides via localhost läuft und er kann es nur mit Port nicht differenzieren? Macht keinen Sinn für mich..
 
 Was ich bisher gefunden habe:
     https://stackoverflow.com/questions/63224440/configuration-for-quarkus-and-keycloak-on-docker
