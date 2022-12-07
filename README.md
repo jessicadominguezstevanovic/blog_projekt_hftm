@@ -11,6 +11,52 @@ Zugriffe testen:
 - http://localhost:8080/q/blog/
 
 
+## Keycloak
+
+Client secret von backend-service: Nak0wMyZLXSgre2QSrhdJhmvNr0D3j7S
+
+Keycloak auch im Dev Mode brauchen zu können habe ich nur dank dieser Seite geschaft: https://quarkus.io/guides/security-keycloak-authorization
+Ich habe noch nicht verstanden wieso er da etwas eigenes mit eigenem Realm aufbaut, statt einfach das von mir angegebene zu importieren. Ist nicht so tragisch, kann ja für dev immer wieder meins importieren. Nur etwas umständlich.
+
+Bevor ich in die Klapse komme, weil mein Keycloak Container läuft, aber mein Quarkus container nicht laufen will mache ich hier einen Schnitt.
+Fehlermeldung in Terminal
+
+Was ich bisher gefunden habe:
+    https://stackoverflow.com/questions/63224440/configuration-for-quarkus-and-keycloak-on-docker
+    Frontend URL angeben
+    Port 8080 verwenden?
+
+## fat-JAR Erstellung
+Erstellen von fat-JAR hat für mich mit folgendem Command nicht funktioniert:
+    ./mvnw package -Dquarkus.package.type=uber-jar
+
+Deshalb habe ich nach Quarkus doku mein application.properties File ergänzt mit folgender Zeile:
+    quarkus.package.type=uber-jar
+Dies hat mir eine .jar.ORIGINAL Datei erstellt in meinem Target Verzeichnis.
+
+## Docker Image erzeugen
+Beim Docker Image erzeugen achtung, ja nicht das Punkt am Ende folgendes Commands vergessen. Sonst kann man noch lange suchen wieso es nicht erzeugt wird ( . = Path):
+    docker build -f src/main/docker/Dockerfile.jvm -t jessi/blog_projekt_hftm .
+
+Was mich verwirrt: Wieso habe ich 2 images?
+
+## Docker Image starten
+docker run -i --rm -p 8080:8080 jessi/blog_projekt_hftm
+
+*_*_*_*_*
+
+Image kann wie folgt gestartet werden:
+    docker run -i --rm -p 8080:8080 jessi/blog_projekt_hftm
+
+## Berechtigungskonzept
+Folgende Methoden sind für alle ohne Login zugänglich:
+    willkommen
+    blog
+Folgende Methoden sind nur für eingelogte Benutzer zugänglich:
+    blog post erstellen
+    blog post löschen
+    blog post suchen
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
