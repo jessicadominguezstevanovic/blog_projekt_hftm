@@ -26,6 +26,9 @@ Was ich bisher gefunden habe:
     https://stackoverflow.com/questions/63224440/configuration-for-quarkus-and-keycloak-on-docker
     Frontend URL angeben
     Port 8080 verwenden?
+    Noch ein möglicher Ansatz: https://www.novatec-gmbh.de/en/blog/keycloak-with-quarkus-better-together/
+
+Habe es nach etwa 3h aufgegeben, ich nehme jetzt einfach please-open.it
 
 ## fat-JAR Erstellung
 Erstellen von fat-JAR hat für mich mit folgendem Command nicht funktioniert:
